@@ -428,7 +428,19 @@
             return `${index + 1}. ${country}`;
         });
 
-        alert("Your Top Saved:\n\n" + currentRanking.join("\n"));
+        // Create a text file and trigger download instead of showing an alert
+        const content = currentRanking.join("\n");
+        const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        const filename = `spiritvision_top_${new Date().toISOString().slice(0,19).replace(/[:T]/g, "-")}.txt`;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
         console.log("Saved Order:", currentRanking);
     }
 
